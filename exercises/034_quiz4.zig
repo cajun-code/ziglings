@@ -9,10 +9,15 @@ const std = @import("std");
 
 const NumError = error{IllegalNumber};
 
-pub fn main() void {
+pub fn main() !void {
     const stdout = std.io.getStdOut().writer();
-
-    const my_num: u32 = getNumber();
+    var my_num: u32 = undefined;
+    const n = getNumber();
+    if (n) |value| {
+        my_num = value;
+    } else |err| switch (err) {
+        else => my_num = 42,
+    }
 
     try stdout.print("my_num={}\n", .{my_num});
 }
